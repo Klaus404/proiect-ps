@@ -1,0 +1,14 @@
+Data;Categorie;Produs;Cantitate;Valoare(RON)
+04.03.2023;Aspiratoare;Philips 3000;3;3000
+04.03.2023;Aspiratoare;Rowenta 4500;2;3200
+;Aspiratoare Total;;;6200
+02.03.2023;Laptopuri;Dell XPS 15;4;20000
+02.03.2023;Laptopuri;HP Spectre x360;3;13500
+;Laptopuri Total;;;33500
+03.03.2023;Telefoane;iPhone 13;5;25000
+03.03.2023;Telefoane;Samsung Galaxy S22;4;16000
+;Telefoane Total;;;41000
+01.03.2023;Televizoare;"Samsung 55""";3;9000
+01.03.2023;Televizoare;"LG 43""";2;4000
+;Televizoare Total;;;13000
+;Grand Total;;;93700

@@ -1,4 +1,7 @@
-import pandas
+import pandas as pd
+import csv
+import chardet
+import matplotlib.pyplot as plt
 
 #Am creat o lista cu toti angajatii din compania eMAG
 listaAngajati = [
@@ -100,4 +103,106 @@ for produs in tupluProduse:
 
 #Am verificat ca incarcatorul Apple apare o singura data listat in produse
 print("\n")
-print(tupluProduse.count("Incarcator retea Apple, USB Type C, 20W, White"))
+print("Numarul de incarcatoare este: " + str(tupluProduse.count("Incarcator retea Apple, USB Type C, 20W, White")))
+print('\n')
+
+with open('./Vanzari.csv') as csv_file:
+    vanzariFisier = csv.reader(csv_file, delimiter=';')
+
+    # Ignorarea primului rând cu denumirea coloanelor
+    next(vanzariFisier)
+
+    # Iterarea peste rândurile fișierului CSV si calculam veniturile din vanzari ale companiei emag
+    for rand in vanzariFisier:
+        venituri = int(rand[6]) * int(rand[7])
+
+    #Afisam veniturile
+    print("Veniturile toatale ale companiei sunt: " + str(venituri))
+
+
+# Detectarea codării fișierului CSV
+with open('Vanzari.csv', 'rb') as f:
+    result = chardet.detect(f.read())
+
+# Citirea fișierului CSV și stocarea într-un DataFrame
+df = pd.read_csv('Vanzari.csv', delimiter=";", encoding=result['encoding'])
+
+print(df)
+
+df.set_index('Numar comanda', inplace=True)
+#Accesez datele despre comanda numarul 4
+print(df.loc[4])
+
+print("\n")
+#Afisez elementul din dataframe de pe pozitia [3, 2]
+print(df.iloc[3, 2])
+print("\n")
+
+#Accesarea primului produs (șirul 0, toate coloanele):
+prima_comanda = df.iloc[0, :]
+#Afisarea lui
+print("Prima comanda:")
+print(prima_comanda)
+
+
+#Modificarea datelor in pandas - Modificarea unei comenzi gresite
+
+# Afișați DataFrame-ul original
+print("DataFrame original:")
+print(df)
+
+# Modificați datele pentru comanda greșită (în acest caz, comanda cu numărul 8)
+index_comanda_gresita = 8  # Indexul pentru comanda greșită
+cod_client_nou = "4E 6F 75 20 43 6F 64"  # Noul cod de client
+furnizor_nou = "Furnizor corect"  # Noul furnizor
+
+# Actualizați coloanele "Cod Client" și "Furnizor"
+df.at[index_comanda_gresita, 'Cod Client'] = cod_client_nou
+df.at[index_comanda_gresita, 'Furnizor'] = furnizor_nou
+
+# Afișați DataFrame-ul modificat
+print("\nDataFrame modificat:")
+print(df)
+
+# Gruparea datelor după coloana 'Categorie'
+grouped = df.groupby('UM')
+
+# Calcularea sumei valorilor pe grup
+valorVanzri = grouped.sum('Vanzari')
+print("Suma valorilor pe grup:")
+print(valorVanzri)
+
+# Numărarea elementelor în fiecare grup
+valoriNumarate = grouped.count()
+print("\nNumărul de elemente în fiecare grup:")
+print(valoriNumarate)
+
+#Cream un grafic cu bare in care sa afisam vanzarile tuturor furnizorilor
+#Setarea dimensiunilor și stilului diagramelor
+plt.style.use('ggplot')
+plt.figure(figsize=(10, 5))
+
+# Crearea diagramelor cu bare
+plt.bar(df['Furnizor'], df['Valoare'], color='b', width=0.4)
+
+# Adăugarea etichetelor axelor și a titlului
+plt.xlabel('Furnizor')
+plt.ylabel('Valoare')
+plt.title('Diagramă cu bare pentru categorii')
+
+# Afișarea diagramelor
+plt.show()
+
+#Stergerea unei inregistrari
+print("DataFrame original:")
+print(df)
+
+# Ștergerea înregistrării cu indexul 5, de exemplu
+index_de_sters = 5
+df = df.drop(index_de_sters)
+
+print("\nDataFrame după ștergerea înregistrării:")
+print(df)
+
+#- prelucrarea seturilor de date cu merge / join;
+
