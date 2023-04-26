@@ -206,3 +206,15 @@ print(df)
 
 #- prelucrarea seturilor de date cu merge / join;
 
+# Crearea dataframe-ului cu informatii despre produsele comandate
+produse_df = pd.DataFrame({
+    'Numar comanda': [1, 3, 6, 7, 9, 12, 14, 16, 18, 20],
+    'Produs': ['Laptop', 'Cafea', 'Televizor', 'Frigider', 'Smartphone', 'Aparat foto', 'Bicicleta', 'Bautura energizanta', 'Tableta', 'Lapte'],
+    'Pret': [3000, 50, 4000, 2000, 1500, 1000, 300, 5, 2000, 5]
+})
+
+# Combina cele doua dataframe-uri bazat pe coloana comuna "Numar comanda"
+comenzi_df = pd.merge(df, produse_df, on='Numar comanda')
+
+# Afisarea dataframe-ului combinat
+print(comenzi_df)
