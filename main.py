@@ -2,6 +2,14 @@ import pandas as pd
 import csv
 import chardet
 import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+from sklearn.linear_model import LinearRegression
+from sklearn.cluster import KMeans
+
+
+def sortareInversa(lista):
+    return sorted(lista, reverse=True)
 
 #Am creat o lista cu toti angajatii din compania eMAG
 listaAngajati = [
@@ -26,6 +34,8 @@ listaAngajati = [
     "Mihai Cojocaru",
     "Roxana Stoica"
 ]
+
+print(sortareInversa(listaAngajati))
 
 #Am adaugat un angajat nou in firma
 listaAngajati.append("Corina Andreea")
@@ -218,3 +228,45 @@ comenzi_df = pd.merge(df, produse_df, on='Numar comanda')
 
 # Afisarea dataframe-ului combinat
 print(comenzi_df)
+
+'''
+# Crearea obiectului KMeans cu 3 clustere
+kmeans = KMeans(n_clusters=3)
+
+# Antrenarea modelului pe datele din dataframe
+kmeans.fit(df)
+
+# Coordonatele x și y ale fiecărui punct
+x = df['Pret']
+y = df['Numar produse']
+
+# Clusterele alocate de algoritm pentru fiecare punct
+clusters = kmeans.predict(df)
+
+# Reprezentarea grafică a punctelor și clusterele lor
+plt.scatter(x, y, c=clusters)
+plt.show()
+
+# Crearea obiectului LogisticRegression
+logreg = LinearRegression()
+
+# Definirea variabilei dependente și a variabilelor independente
+y = df['Comanda plasata']
+X = df.drop(['Comanda plasata'], axis=1)
+
+# Antrenarea modelului pe datele din dataframe
+logreg.fit(X, y)
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+
+# Antrenarea modelului pe setul de antrenare
+logreg.fit(X_train, y_train)
+
+# Testarea modelului pe setul de testare
+y_pred = logreg.predict(X_test)
+
+
+accuracy = accuracy_score(y_test, y_pred)
+
+print("Accuracy:", accuracy)
+'''
